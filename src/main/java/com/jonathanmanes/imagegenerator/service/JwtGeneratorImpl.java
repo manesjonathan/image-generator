@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,9 +21,6 @@ public class JwtGeneratorImpl implements JwtGeneratorInterface {
 
     @Value("${app.jwt.message}")
     private String message;
-
-    @Value("${app.jwt.expiration}")
-    private String expiration;
 
     @Override
     public Map<String, String> generateToken(User user) {

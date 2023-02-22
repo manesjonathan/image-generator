@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ImageGeneratorApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ImageGeneratorApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ImageGeneratorApplication.class, args);
+    }
 
 }
