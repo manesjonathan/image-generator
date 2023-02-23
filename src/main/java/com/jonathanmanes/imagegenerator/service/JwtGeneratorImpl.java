@@ -1,11 +1,13 @@
 package com.jonathanmanes.imagegenerator.service;
 
 import com.jonathanmanes.imagegenerator.model.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -15,25 +17,37 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class JwtGeneratorImpl implements JwtGeneratorInterface {
+public class JwtGeneratorImpl {
     @Value("${app.jwt.secret}")
     private String secret;
 
-    @Value("${app.jwt.message}")
-    private String message;
-
-    @Override
-    public Map<String, String> generateToken(User user) {
-        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-        String jwtToken = Jwts.builder()
+    public String generateToken(User user) {
+        Key key = Keys.hmacShaKeyFor(secret.getBytes());
+        return Jwts.builder()
                 .setSubject(user.getEmail())
-                .setIssuedAt(new Date())
-                .signWith(key)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 1 hour
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
 
-        Map<String, String> jwtTokenGen = new HashMap<>();
-        jwtTokenGen.put("token", jwtToken);
-        jwtTokenGen.put("message", message);
-        return jwtTokenGen;
+    public String getUsernameFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(secret.getBytes())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
+    }
+
+    public boolean validateToken(String token) {
+        Key key = Keys.hmacShaKeyFor(secret.getBytes());
+
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+
 @Configuration
 public class SecurityConfig {
     @Value("${app.openai.api}")
@@ -20,8 +21,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .anyRequest().permitAll()
-                )
+                        /*.requestMatchers("/user/login").permitAll()*/
+                        .anyRequest().permitAll())
                 .httpBasic(withDefaults())
                 .csrf().disable();
         return http.build();
