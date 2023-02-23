@@ -16,8 +16,9 @@ public class ImageGeneratorController {
     private final AIService aiService;
     private final JwtGeneratorImpl jwtGenerator;
 
+    @CrossOrigin
     @PostMapping("/generate")
-    public ResponseEntity<?> generateImage(@RequestBody User user, @RequestParam String prompt, @RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<?> generateImage(@RequestBody String prompt, @RequestHeader("Authorization") String authHeader) {
 
         boolean validateJwtToken = jwtGenerator.validateToken(authHeader);
         if (validateJwtToken) {
