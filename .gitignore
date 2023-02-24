@@ -36,3 +36,5 @@ out/
 .vscode/
 /src/main/resources/application-dev.properties
 /src/main/resources/application.properties
+/node_modules/
+/build/

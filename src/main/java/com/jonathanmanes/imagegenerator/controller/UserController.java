@@ -1,7 +1,7 @@
 package com.jonathanmanes.imagegenerator.controller;
 
 import com.jonathanmanes.imagegenerator.model.User;
-import com.jonathanmanes.imagegenerator.service.JwtGeneratorImpl;
+import com.jonathanmanes.imagegenerator.service.JwtUtils;
 import com.jonathanmanes.imagegenerator.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserServiceImpl userService;
-    private final JwtGeneratorImpl jwtGenerator;
+    private final JwtUtils jwtUtils;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
+    public ResponseEntity<?> registerUser(User user) {
         if (userService.createUser(user)) {
             return new ResponseEntity<>(true, HttpStatus.CREATED);
         } else {
@@ -38,6 +38,6 @@ public class UserController {
             return new ResponseEntity<>(false, HttpStatus.FORBIDDEN);
         }
 
-        return new ResponseEntity<>(jwtGenerator.generateToken(user), HttpStatus.OK);
+        return new ResponseEntity<>(jwtUtils.generateToken(user), HttpStatus.OK);
     }
 }

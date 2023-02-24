@@ -16,7 +16,7 @@ public class AIService {
     public String generatePicture(String prompt) {
         CreateImageRequest createImageRequest = CreateImageRequest.builder()
                 .prompt(prompt)
-                .size("1024x1024")
+                .size("512x512")
                 .n(1)
                 .build();
 
