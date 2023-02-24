@@ -4,21 +4,22 @@ import com.jonathanmanes.imagegenerator.model.User;
 import com.jonathanmanes.imagegenerator.repository.UserRepository;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserServiceInterface {
+public class UserService{
 
     private final UserRepository userRepository;
 
     @Resource(name = "passwordEncoder")
     private final PasswordEncoder passwordEncoder;
 
-    @Override
     public Boolean createUser(User user) {
         User userByEmailAndPassword = findUserByEmailAndPassword(user);
         if (userByEmailAndPassword == null) {
@@ -32,7 +33,6 @@ public class UserServiceImpl implements UserServiceInterface {
         }
     }
 
-    @Override
     public User findUserByEmailAndPassword(User user) {
         Optional<User> userByEmail = userRepository.findUserByEmail(user.getEmail());
         if (userByEmail.isPresent()) {
@@ -41,5 +41,10 @@ public class UserServiceImpl implements UserServiceInterface {
             }
         }
         return null;
+    }
+
+    public User findUserByEmail(String email) {
+        Optional<User> userByEmail = userRepository.findUserByEmail(email);
+        return userByEmail.orElse(null);
     }
 }
