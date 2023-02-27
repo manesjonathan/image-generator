@@ -3,9 +3,7 @@ package com.jonathanmanes.imagegenerator.config;
 import com.jonathanmanes.imagegenerator.repository.UserRepository;
 import com.jonathanmanes.imagegenerator.service.JwtUtils;
 import com.jonathanmanes.imagegenerator.service.UserService;
-import com.theokanning.openai.service.OpenAiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,8 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class SecurityConfig {
-    @Value("${app.openai.api}")
-    private String apiKey;
 
     private final UserRepository userRepository;
 
@@ -55,8 +51,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public OpenAiService getOpenAiService() {
-        return new OpenAiService(apiKey);
-    }
 }

@@ -13,6 +13,8 @@ public class AIService {
     @Resource(name = "getOpenAiService")
     private final OpenAiService openAiService;
 
+    private final StorageService storageService;
+
     public String generatePicture(String prompt) {
         CreateImageRequest createImageRequest = CreateImageRequest.builder()
                 .prompt(prompt)
@@ -20,6 +22,8 @@ public class AIService {
                 .n(1)
                 .build();
 
-        return openAiService.createImage(createImageRequest).getData().get(0).getUrl();
+        String url = openAiService.createImage(createImageRequest).getData().get(0).getUrl();
+        storageService.upload(url);
+        return url;
     }
 }
