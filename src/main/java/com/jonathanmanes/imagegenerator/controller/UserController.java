@@ -4,7 +4,6 @@ import com.jonathanmanes.imagegenerator.model.User;
 import com.jonathanmanes.imagegenerator.service.JwtUtils;
 import com.jonathanmanes.imagegenerator.service.UserService;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
