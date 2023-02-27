@@ -33,7 +33,7 @@ public class JwtUtils {
                 .setSubject(user.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 1 hour
-                .claim("role", "USER") // Add the user role to the token's claims
+                .claim("role", "USER")
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -65,7 +65,7 @@ public class JwtUtils {
         String email = getUsernameFromToken(token);
         User user = userService.findUserByEmail(email);
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("USER")); // Add user role
+        authorities.add(new SimpleGrantedAuthority("USER"));
         return new UsernamePasswordAuthenticationToken(user, "", authorities);
     }
 
