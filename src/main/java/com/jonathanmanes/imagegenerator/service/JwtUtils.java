@@ -22,9 +22,7 @@ import java.util.List;
 public class JwtUtils {
     @Value("${app.jwt.secret}")
     private String secret;
-
     private final UserService userService;
-
     public String generateToken(User user) {
         Key key = Keys.hmacShaKeyFor(secret.getBytes());
         return Jwts.builder()
@@ -35,7 +33,6 @@ public class JwtUtils {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
-
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(secret.getBytes())
@@ -52,9 +49,8 @@ public class JwtUtils {
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             System.out.println(claims);
             Date expiration = claims.getBody().getExpiration();
-            return expiration.after(new Date()); // Check if the token has not expired
+            return expiration.after(new Date());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -66,5 +62,4 @@ public class JwtUtils {
         authorities.add(new SimpleGrantedAuthority("USER"));
         return new UsernamePasswordAuthenticationToken(user, "", authorities);
     }
-
 }

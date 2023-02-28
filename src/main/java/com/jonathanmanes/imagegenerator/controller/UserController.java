@@ -20,7 +20,7 @@ public class UserController {
     private JwtUtils jwtUtils;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(User user) {
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
         if (userService.createUser(user)) {
             return new ResponseEntity<>(true, HttpStatus.CREATED);
         } else {

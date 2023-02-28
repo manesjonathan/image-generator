@@ -37,8 +37,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, JwtUtils jwtUtils) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
                         .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/generate").hasRole("USER") // Add authorization rule for the /generate endpoint
-
+                        .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/create-payment-intent").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/generate").hasRole("USER")
                         .anyRequest().authenticated())
                 .csrf().disable()
                 .cors().and().addFilterBefore(new JwtAuthorizationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
