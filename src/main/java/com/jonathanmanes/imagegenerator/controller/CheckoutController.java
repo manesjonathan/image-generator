@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @CrossOrigin("http://localhost:3000")
 public class CheckoutController {
-    @Value("stripe.secret.key")
-    private String secretKey;
+    @Value("${stripe.secret.key}")
+    private String apiKey;
 
     @PostMapping("/create-payment-intent")
     public ResponseEntity<?> createPayment(@RequestParam("amount") long amount) throws StripeException {
-        Stripe.apiKey = secretKey;
+        Stripe.apiKey = apiKey;
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
                         .setAmount(amount)
