@@ -1,14 +1,13 @@
 package com.jonathanmanes.imagegenerator.controller;
 
-import com.google.gson.JsonElement;
+import com.jonathanmanes.imagegenerator.service.StripeService;
+import com.jonathanmanes.imagegenerator.service.UserService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.*;
+import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class CheckoutController {
     @Value("${stripe.secret.key}")
     private String apiKey;
+
+    private final StripeService stripeService;
+    private final UserService userService;
 
     @PostMapping("/create-payment-intent")
     public ResponseEntity<?> createPayment(@RequestParam("amount") long amount) throws StripeException {
@@ -41,10 +43,8 @@ public class CheckoutController {
 
     @PostMapping("/webhook")
     public ResponseEntity<?> paymentSucceeded(@RequestBody String json) {
-        Event event = Event.GSON.fromJson(json, Event.class);
-        EventDataObjectDeserializer stripeObject = event.getDataObjectDeserializer();
-
-        System.out.println(stripeObject.getRawJson());
+        String email = stripeService.extractEmailFromChargeEvent(json);
+        userService.refillUser(email);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -63,4 +63,10 @@ public class UserService {
         }
         return false;
     }
+
+    public void refillUser(String email) {
+        User user = findUserByEmail(email);
+        user.setQuota(5);
+        userRepository.save(user);
+    }
 }
