@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/create-payment-intent").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/webhook").permitAll()
                         .requestMatchers(HttpMethod.POST, "/generate").hasRole("USER")
                         .anyRequest().authenticated())
                 .csrf().disable()
