@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/create-payment-intent").permitAll()
                         .requestMatchers(HttpMethod.POST, "/webhook").permitAll()
                         .requestMatchers(HttpMethod.POST, "/generate").hasRole("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/image/delete/${id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/image/delete/{name}").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .csrf().disable()
                 .cors().and().addFilterBefore(new JwtAuthorizationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);

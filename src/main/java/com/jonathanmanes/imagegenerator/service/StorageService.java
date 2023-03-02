@@ -50,4 +50,8 @@ public class StorageService {
         ObjectListing objectListing = amazonS3Client.listObjects(bucketName);
         return objectListing.getObjectSummaries();
     }
+
+    public void deleteObject(String name) {
+        amazonS3Client.deleteObject(bucketName, name);
+    }
 }

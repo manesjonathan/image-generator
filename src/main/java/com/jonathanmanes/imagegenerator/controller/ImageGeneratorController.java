@@ -57,4 +57,20 @@ public class ImageGeneratorController {
             return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
         }
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteImage(@RequestParam("name") String name, @RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.substring(7);
+        boolean validateJwtToken = jwtUtils.validateToken(token);
+        if (!validateJwtToken) {
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+        }
+        Authentication auth = jwtUtils.getAuthentication(authHeader);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        if (auth.getAuthorities().stream().noneMatch(r -> r.getAuthority().equals("ADMIN"))) {
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+        }
+        storageService.deleteObject(name);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
 }
