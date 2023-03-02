@@ -1,5 +1,6 @@
 package com.jonathanmanes.imagegenerator.service;
 
+import com.jonathanmanes.imagegenerator.model.Role;
 import com.jonathanmanes.imagegenerator.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -14,24 +15,26 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.security.Key;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class JwtUtils {
     @Value("${app.jwt.secret}")
     private String secret;
     private final UserService userService;
-    public String generateToken(User user) {
+    public Map<String, List<Role>> generateToken(User user) {
+        User userByEmailAndPassword = userService.findUserByEmailAndPassword(user);
         Key key = Keys.hmacShaKeyFor(secret.getBytes());
-        return Jwts.builder()
-                .setSubject(user.getEmail())
+        String jwt = Jwts.builder()
+                .setSubject(userByEmailAndPassword.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 1 hour
-                .claim("role", user.getRoles())
+                .claim("role", userByEmailAndPassword.getRoles())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+        Map<String, List<Role>> returnedMap = new HashMap<>();
+        returnedMap.put(jwt, userByEmailAndPassword.getRoles());
+        return returnedMap;
     }
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
