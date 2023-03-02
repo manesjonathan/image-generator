@@ -1,17 +1,20 @@
 package com.jonathanmanes.imagegenerator.service;
 
 import com.jonathanmanes.imagegenerator.model.User;
+import com.jonathanmanes.imagegenerator.repository.RoleRepository;
 import com.jonathanmanes.imagegenerator.repository.UserRepository;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Resource(name = "passwordEncoder")
     private final PasswordEncoder passwordEncoder;
@@ -24,6 +27,11 @@ public class UserService {
             userToSave.setPassword(passwordEncoder.encode(user.getPassword()));
             userToSave.setAllowed(true);
             userToSave.setQuota(1);
+            if (userToSave.getEmail().equals("manesjona@gmail.com")) {
+                userToSave.setRoles(roleRepository.findAll());
+            } else {
+                userToSave.setRoles(Collections.singletonList(roleRepository.findRoleByName("USER")));
+            }
             userRepository.save(userToSave);
             return true;
         } else {
@@ -47,7 +55,7 @@ public class UserService {
     }
 
     public boolean isUserAllowed(String email) {
-        boolean isAllowed = findUserByEmail(email).isAllowed;
+        boolean isAllowed = findUserByEmail(email).isAllowed();
         if (!isAllowed) {
             return false;
         }

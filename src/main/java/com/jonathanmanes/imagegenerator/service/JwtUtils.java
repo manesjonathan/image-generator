@@ -59,7 +59,7 @@ public class JwtUtils {
         String email = getUsernameFromToken(token);
         User user = userService.findUserByEmail(email);
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("USER"));
+        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
         return new UsernamePasswordAuthenticationToken(user, "", authorities);
     }
 }

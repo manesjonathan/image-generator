@@ -1,5 +1,6 @@
 package com.jonathanmanes.imagegenerator.config;
 
+import com.jonathanmanes.imagegenerator.repository.RoleRepository;
 import com.jonathanmanes.imagegenerator.repository.UserRepository;
 import com.jonathanmanes.imagegenerator.service.JwtUtils;
 import com.jonathanmanes.imagegenerator.service.UserService;
@@ -17,10 +18,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public SecurityConfig(UserRepository userRepository) {
+    public SecurityConfig(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Bean
@@ -30,7 +33,7 @@ public class SecurityConfig {
 
     @Bean
     public UserService userService(PasswordEncoder passwordEncoder) {
-        return new UserService(userRepository, passwordEncoder);
+        return new UserService(userRepository, roleRepository, passwordEncoder);
     }
 
     @Bean
@@ -41,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/create-payment-intent").permitAll()
                         .requestMatchers(HttpMethod.POST, "/webhook").permitAll()
                         .requestMatchers(HttpMethod.POST, "/generate").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/image/delete/${id}").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .csrf().disable()
                 .cors().and().addFilterBefore(new JwtAuthorizationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
