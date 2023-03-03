@@ -40,8 +40,30 @@ git clone https://github.com/manesjonathan/image-generator.git
 
 4. Enter your database credentials and OpenAI API key in `application.properties`
 
+```properties
+spring.jpa.database=POSTGRESQL
+spring.sql.init.platform=postgres
+spring.datasource.url=jdbc:postgresql://[YOUR_URL]/[DB_NAME]
+spring.datasource.username=[DB_USERNAME]
+spring.datasource.password=[DB_PASSWORD
+spring.jpa.hibernate.ddl-auto=update
+
+app.jwt.secret=[PASSWORD_FOR_JWT]
+app.openai.api=[OPENAI_API_KEY]
+
+aws.access.key=[AWS_ACCESS_KEY]
+aws.secret.key=[AWS_SECRET_KEY]
+stripe.secret.key=[STRIPE_SECRET_KEY]
+
+```
+
+5. Run the project
+
 
 ## Contributing
+
+The following features are planned for the next release:
+* Add a feature to rate the generated images
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 * If you have suggestions for adding or removing projects, feel free to [open an issue](https://github.com/manesjonathan/image-generator/issues/new) to discuss it.
