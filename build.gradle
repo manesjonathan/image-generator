@@ -8,6 +8,7 @@ group = 'com.jonathan-manes'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -39,6 +40,7 @@ dependencies {
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.415'
 
     implementation 'com.stripe:stripe-java:22.10.0'
+    implementation 'com.amazonaws.serverless:aws-serverless-java-container-springboot2:1.9'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

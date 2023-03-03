@@ -22,6 +22,11 @@ public class CheckoutController {
     private final StripeService stripeService;
     private final UserService userService;
 
+    @GetMapping("/hello")
+    public ResponseEntity<?> hello() {
+        return new ResponseEntity<>("Hello", HttpStatus.OK);
+    }
+
     @PostMapping("/create-payment-intent")
     public ResponseEntity<?> createPayment(@RequestParam("amount") long amount) throws StripeException {
         Stripe.apiKey = apiKey;
