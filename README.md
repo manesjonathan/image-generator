@@ -22,6 +22,11 @@ This project is created using Java Spring framework and OpenAI Dall-E API to gen
 
 This project use Spring Security to authenticate users using Json Web Token. The users are pre-registred in a Postgresql database.
 
+It also uses AWS S3 to store the generated images.
+
+At creation, the registered user has 1 credit. Each time he generates an image, he loses 1 credit. 
+but there is an option to refill the credits by paying with Stripe.
+
 ## Getting Started
 
 To get a local copy up and running follow these simple example steps.
@@ -30,22 +35,26 @@ To get a local copy up and running follow these simple example steps.
 
 1. Get an API Key at [https://openai.com/]
 
-2. Create a Postgresql database.
+2. Configure AWS S3 and create a bucket. You will need the access key and secret key.
 
-3. Clone the repo
+3. Create a Stripe account and get the secret key.
+
+4. Create a Postgresql database.
+
+5. Clone the repo
 
 ```sh
 git clone https://github.com/manesjonathan/image-generator.git
 ```
 
-4. Enter your database credentials and OpenAI API key in `application.properties`
+6. Enter your database credentials and OpenAI API key in `application.properties`
 
 ```properties
 spring.jpa.database=POSTGRESQL
 spring.sql.init.platform=postgres
 spring.datasource.url=jdbc:postgresql://[YOUR_URL]/[DB_NAME]
 spring.datasource.username=[DB_USERNAME]
-spring.datasource.password=[DB_PASSWORD
+spring.datasource.password=[DB_PASSWORD]
 spring.jpa.hibernate.ddl-auto=update
 
 app.jwt.secret=[PASSWORD_FOR_JWT]
@@ -57,7 +66,7 @@ stripe.secret.key=[STRIPE_SECRET_KEY]
 
 ```
 
-5. Run the project
+7. Run the project
 
 
 ## Contributing
