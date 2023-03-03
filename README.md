@@ -66,6 +66,8 @@ stripe.secret.key=[STRIPE_SECRET_KEY]
 
 ```
 
+6. Update the Stripe webhook in your Stripe account. If you run locally, you can use [ngrok](https://ngrok.com/) to create a public URL for your localhost.
+
 7. Run the project
 
 
