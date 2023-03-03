@@ -63,6 +63,7 @@ app.openai.api=[OPENAI_API_KEY]
 aws.access.key=[AWS_ACCESS_KEY]
 aws.secret.key=[AWS_SECRET_KEY]
 stripe.secret.key=[STRIPE_SECRET_KEY]
+custom.admin.email=[ADMIN_EMAIL]
 
 ```
 

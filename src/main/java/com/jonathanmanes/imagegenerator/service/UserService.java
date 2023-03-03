@@ -5,6 +5,7 @@ import com.jonathanmanes.imagegenerator.repository.RoleRepository;
 import com.jonathanmanes.imagegenerator.repository.UserRepository;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
@@ -19,6 +20,9 @@ public class UserService {
     @Resource(name = "passwordEncoder")
     private final PasswordEncoder passwordEncoder;
 
+    @Value("${custom.admin.email}")
+    private String adminEmail;
+
     public Boolean createUser(User user) {
         User userByEmailAndPassword = findUserByEmailAndPassword(user);
         if (userByEmailAndPassword == null) {
@@ -27,7 +31,7 @@ public class UserService {
             userToSave.setPassword(passwordEncoder.encode(user.getPassword()));
             userToSave.setAllowed(true);
             userToSave.setQuota(1);
-            if (userToSave.getEmail().equals("manesjona@gmail.com")) {
+            if (userToSave.getEmail().equals(adminEmail)) {
                 userToSave.setRoles(roleRepository.findAll());
             } else {
                 userToSave.setRoles(Collections.singletonList(roleRepository.findRoleByName("USER")));
