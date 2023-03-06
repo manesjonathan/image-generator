@@ -41,6 +41,7 @@ dependencies {
 
     implementation 'com.stripe:stripe-java:22.10.0'
     implementation 'javax.xml.bind:jaxb-api:2.3.0'
+    implementation 'sh.platform:config:2.2.2'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
